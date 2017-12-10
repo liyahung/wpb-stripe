@@ -121,9 +121,7 @@ resource "aws_cloudfront_distribution" "distribution_www" {
       origin_protocol_policy = "http-only"
       origin_ssl_protocols = ["TLSv1.2"]
     }
-  }
-
-  default_cache_behavior {
+  } default_cache_behavior {
     allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods = ["GET", "HEAD"]
     viewer_protocol_policy = "allow-all"
@@ -146,7 +144,8 @@ resource "aws_cloudfront_distribution" "distribution_www" {
     ssl_support_method = "sni-only"
   }
 
-  restrictions {
+  res
+trictions {
     geo_restriction {
       restriction_type = "none"
     }
@@ -157,30 +156,6 @@ resource "aws_cloudfront_distribution" "distribution_www" {
   price_class = "${var.price_class}"
 }
 
-resource "aws_route53_zone" "zone" {
-  name = "${var.site_domain}"
-}
 
-resource "aws_route53_record" "root" {
-  zone_id = "${aws_route53_zone.zone.zone_id}"
-  name = "${var.site_domain}"
-  type = "A"
 
-  alias {
-    name = "${aws_cloudfront_distribution.distribution.domain_name}"
-    zone_id = "Z2FDTNDATAQYW2"
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "www" {
-  zone_id = "${aws_route53_zone.zone.zone_id}"
-  name = "www.${var.site_domain}"
-  type = "A"
-
-  alias {
-    name = "${aws_cloudfront_distribution.distribution_www.domain_name}"
-    zone_id = "Z2FDTNDATAQYW2"
-    evaluate_target_health = false
-  }
-}
+  
